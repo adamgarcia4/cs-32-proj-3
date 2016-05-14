@@ -128,7 +128,7 @@ bool GameImpl::takeTurn()
 		//Red should make their move if they can.  This should be a valid move, as handled by red's move choosing function.  Precautions taken here for debugging.
 		if (m_scaffold->makeMove(colSelected, BLACK) == false)
 		{
-			cerr << "RED's move at col: " << colSelected << " at " << numTurns << " turn is an error!" << endl;
+			cerr << "BLACK's move at col: " << colSelected << " at " << numTurns << " turn is an error!" << endl;
 		}
 		//turn has been completed, so add 1 to turn counter.
 		numTurns++;
@@ -162,6 +162,7 @@ bool GameImpl::takeTurn()
 	else
 	{
 		cerr << "No Red or Black able to move.  ERROR!" << endl;
+		return false;
 	}
 
 }
@@ -181,7 +182,8 @@ void GameImpl::play()
 
 int GameImpl::checkerAt(int c, int r) const
 {
-	return VACANT;  //  This is not always correct; it's just here to compile
+	
+	return m_scaffold->checkerAt(c, r);  //  This is not always correct; it's just here to compile
 }
 
 //******************** Game functions *******************************
