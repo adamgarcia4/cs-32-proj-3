@@ -1,6 +1,7 @@
 // Scaffold.cpp
 #include <vector>
 #include <iostream>
+#include <stack>
 #include "provided.h"
 using namespace std;
 
@@ -21,6 +22,8 @@ private:
 	int m_nRows;
 	int m_nCols;
 	vector<int> m_numInCol; //keeps tally of number of pieces in each column.
+	stack<int> m_colHistory;
+	stack<int> m_colorHistory;
 };
 
 ScaffoldImpl::ScaffoldImpl(int nColumns, int nLevels)
@@ -121,7 +124,8 @@ void ScaffoldImpl::display() const
 	}
 	for (int i = 0; i <= colMax; i++)
 		cout << "+-";
-	cout << "+";
+	cout << "+"<<endl;
+
 }
 
 bool ScaffoldImpl::makeMove(int column, int color)
@@ -139,10 +143,12 @@ bool ScaffoldImpl::makeMove(int column, int color)
 		cerr << "Column: " << column << "is Fully Filled!" << endl;
 		return false;
 	}
-	if (color == RED || color == BLACK)
+	if (color == RED || color == BLACK) //Vacant
 	{
 		m_grid[nextAvailLevel][colPos] = color;
 		m_numInCol[colPos]++;
+		m_colHistory.push(colPos);
+		m_colorHistory.push(color);
 		return true;
 	}
 	else
@@ -151,7 +157,20 @@ bool ScaffoldImpl::makeMove(int column, int color)
 
 int ScaffoldImpl::undoMove()
 {
-	return 0;  //  This is not always correct; it's just here to compile
+	int lastCol = m_colHistory.top(); //get current col state of last move
+	int lastColor = m_colorHistory.top(); //get current color of last move.
+	
+	m_colHistory.pop();
+	m_colorHistory.pop();
+
+	int filledRows = m_numInCol[lastCol];
+	//cerr << filledRows << "    " << lastCol << endl;
+	if (filledRows == 0)
+		return 0;
+
+	m_grid[filledRows-1][lastCol] = VACANT;
+	m_numInCol[lastCol]--;
+	return lastCol+1;
 }
 
 //******************** Scaffold functions *******************************
