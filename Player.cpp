@@ -2,6 +2,7 @@
 
 #include "provided.h"
 #include <string>
+#include <vector>
 using namespace std;
 
 class HumanPlayerImpl
@@ -22,14 +23,38 @@ public:
 	int chooseMove(const Scaffold& s, int N, int color);
 };
 
+/*
+A HumanPlayer chooses its move by prompting a person running the program for a move (reprompting if necessary until the person enters a valid move), and returning that choice.
+*/
 int HumanPlayerImpl::chooseMove(const Scaffold& s, int N, int color)
 {
-	return -1;  //  This is not always correct; it's just here to compile
+
+	int colSelection;
+	bool validCol = false;
+	while (validCol == false)
+	{
+		cout << "Please select a column: ";
+		cin >> colSelection;
+		if (colSelection >= 1 && colSelection <= s.cols())
+			return colSelection;
+	}
+	return -1;
+
+
 }
 
 int BadPlayerImpl::chooseMove(const Scaffold& s, int N, int color)
 {
-	return -1;  //  This is not always correct; it's just here to compile
+	if (s.numberEmpty() == 0)
+		return -1;
+	for (int c = 0; c < s.cols(); c++)
+	{
+		//cerr << c << "  " << s.levels() << endl;
+		if (s.checkerAt(c+1, s.levels()) == VACANT)
+			return c + 1;
+	}
+
+	return -9999; //should never reach this stage.
 }
 
 int SmartPlayerImpl::chooseMove(const Scaffold& s, int N, int color)

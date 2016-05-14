@@ -1,6 +1,5 @@
 // Scaffold.cpp
 #include <vector>
-#include <iostream>
 #include <stack>
 #include "provided.h"
 using namespace std;

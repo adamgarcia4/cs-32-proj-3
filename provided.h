@@ -2,6 +2,7 @@
 #define PROVIDED_INCLUDED
 
 #include <string>
+#include <iostream>
 
 const int VACANT = -1;
 const int RED = 0;
