@@ -3,11 +3,13 @@
 
 #include <string>
 #include <iostream>
+using namespace std;
 
 const int VACANT = -1;
 const int RED = 0;
 const int BLACK = 1;
 const int TIE_GAME = -1;
+const int NO_WINNER = -99;
 
 class ScaffoldImpl;
 

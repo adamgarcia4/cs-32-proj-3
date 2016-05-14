@@ -139,7 +139,7 @@ bool ScaffoldImpl::makeMove(int column, int color)
 	int nextAvailLevel = m_numInCol[colPos];
 	if (nextAvailLevel >= m_nRows)
 	{
-		cerr << "Column: " << column << "is Fully Filled!" << endl;
+		cerr << "Column: " << column << " is Fully Filled!" << endl;
 		return false;
 	}
 	if (color == RED || color == BLACK) //Vacant
