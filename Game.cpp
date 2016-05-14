@@ -90,7 +90,7 @@ bool GameImpl::takeTurn()
 		//Red should make their move if they can.  This should be a valid move, as handled by red's move choosing function.  Precautions taken here for debugging.
 		if (m_scaffold->makeMove(colSelected, RED) == false)
 		{
-			cerr << "RED's move at col: " << colSelected << numTurns << " turn is an error!" << endl;
+			cerr << "RED's move at col: " << colSelected <<" at " << numTurns << " turn is an error!" << endl;
 		}
 		//turn has been completed, so add 1 to turn counter.
 		numTurns++;
@@ -118,26 +118,52 @@ bool GameImpl::takeTurn()
 		//Change whose turn it is next.
 		m_whoseTurn = BLACK;
 
+		//Turn Made, and all variables are updated for next move.
+		return true;
 	}
 	else if (m_whoseTurn == BLACK)
 	{
-		colSelected = m_player2->chooseMove(*m_scaffold, m_winNum, BLACK);
+		//Red should select their column move.
+		colSelected = m_player1->chooseMove(*m_scaffold, m_winNum, BLACK);
+		//Red should make their move if they can.  This should be a valid move, as handled by red's move choosing function.  Precautions taken here for debugging.
 		if (m_scaffold->makeMove(colSelected, BLACK) == false)
 		{
-			cerr << "BLACK's move at col: " << colSelected << " on the " << numTurns << " turn is an error!" << endl;
+			cerr << "RED's move at col: " << colSelected << " at " << numTurns << " turn is an error!" << endl;
 		}
-		m_whoseTurn = RED;
+		//turn has been completed, so add 1 to turn counter.
 		numTurns++;
+
+		//check to see if anyone has won the game.  This means checking the scaffold for a win condition.  TODO: completed does not work currently.
+		if (this->completed(m_whoWon) == true)
+		{
+			if (m_whoWon == RED)
+			{
+				cerr << "RED just won game after " << numTurns << " turns" << endl;
+				return false;
+			}
+			else if (m_whoWon == BLACK)
+			{
+				cerr << "BLACK just won game after " << numTurns << " turns" << endl;
+				return false;
+			}
+			else
+			{
+				cerr << "Something is wrong.  Completed==true but red or black not set to win." << endl;
+				return false;
+			}
+		}
+
+		//Change whose turn it is next.
+		m_whoseTurn = RED;
+
+		//Turn Made, and all variables are updated for next move.
+		return true;
 	}
 	else
 	{
 		cerr << "No Red or Black able to move.  ERROR!" << endl;
 	}
-	
-	//int winner = 
-	//if (completed())
 
-	return false;  //  This is not always correct; it's just here to compile
 }
 
 void GameImpl::play()
